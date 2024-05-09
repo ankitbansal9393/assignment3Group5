@@ -46,7 +46,7 @@ struct ContentView: View {
     }
 }
 
-#Preview{
+#Preview {
     ContentView()
         .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
 }
