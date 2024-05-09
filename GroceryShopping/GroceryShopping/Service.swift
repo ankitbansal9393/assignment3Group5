@@ -78,8 +78,9 @@ class FirestoreService: ObservableObject {
                     
                     let quantity = rawDocumentData["quantity"] as? Int ?? 0
                     let price = rawDocumentData["price"] as? Double ?? 0.0
+                    let formattedPrice = (price * 100).rounded() / 100
                     
-                    let groceryItem = GroceryItem(id: document.documentID, name: name, price: price, category: category, quantity: quantity)
+                    let groceryItem = GroceryItem(id: document.documentID, name: name, price: formattedPrice, category: category, quantity: quantity)
                     groceryItems.append(groceryItem)
                 }
                 
@@ -119,18 +120,39 @@ class FirestoreService: ObservableObject {
             }
     }
 
-
     func shopItem(_ item: GroceryItem) {
-        var newItem = item
-        newItem.quantity += 1
-        updateGroceryItem(newItem)
+        // Check if the item is already in the basket
+        if let index = basketItems.firstIndex(where: { $0.id == item.id }) {
+            // If the item is already in the basket, increase its quantity
+            basketItems[index].quantity += 1
+            updateGroceryItem(basketItems[index]) // Update the quantity in Firestore
+        } else {
+            // If the item is not in the basket, add it with quantity 1
+            var newItem = item
+            newItem.quantity = 1
+            basketItems.append(newItem)
+            updateGroceryItem(newItem) // Add the new item to Firestore
+        }
     }
-    
-    private func updateGroceryItem(_ item: GroceryItem) {
+
+    func updateGroceryItem(_ item: GroceryItem) {
         do {
             try db.collection("groceryItems").document(item.id).setData(from: item)
         } catch {
             // Handle error
         }
     }
+  /* func updateItemQuantityInFirestore(item: GroceryItem, newQuantity: Int) {
+           let itemRef = db.collection("groceryItems").document(item.id)
+           
+           itemRef.updateData([
+               "quantity": newQuantity
+           ]) { error in
+               if let error = error {
+                   print("Error updating item quantity: \(error.localizedDescription)")
+               } else {
+                   print("Item quantity updated successfully in Firestore")
+               }
+           }
+       }*/
 }

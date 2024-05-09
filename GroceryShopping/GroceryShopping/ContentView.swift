@@ -7,33 +7,46 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
-    @ObservedObject var viewModel = GroceryListViewModel()
+    @State private var isActive = false
+    
     
     var body: some View {
-        NavigationView {
-            TabView {
-                NavigationView {
-                    GroceryListView()
-                }
-                .tabItem {
-                    Label("Grocery List", systemImage: "list.bullet")
+        NavigationStack {
+            ZStack {
+                Color(hex: "#8CBDB9")
+                    .edgesIgnoringSafeArea(.all)
+                
+                
+                VStack {
+                    Image("logo2")
+                        .resizable()
+                        .frame(width: 300, height: 300)
+                    
                 }
                 
-                NavigationView {
-                    BasketView(viewModel: viewModel)
-                }
-                .tabItem {
-                    Label("Basket", systemImage: "cart")
-                }
+                
+                
+                NavigationLink(destination: WelcomeView(),
+                               isActive: $isActive,
+                               label: {  })
+                
             }
+            .onAppear(perform: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    self.isActive = true
+                }
+            })
         }
-        /*.onAppear {
-            viewModel.fetchGroceryItems() // Call start() when ContentView appears
-        }*/
+        .background(Color.mainMintColor)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
+        
     }
 }
 
-#Preview {
+#Preview{
     ContentView()
+        .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
 }

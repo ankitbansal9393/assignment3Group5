@@ -10,31 +10,25 @@ import Combine
 
 class GroceryListViewModel: ObservableObject {
     private var firestoreService = FirestoreService()
-  
+    
     @Published var groceryItems: [GroceryItem] = []
     @Published var selectedCategory: String = "All"  // Default category filter
     @Published var basketItems: [GroceryItem] = []
     @Published var orderItems: [OrderItem] = []
-    //@Published var order: Order
     
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        // fetchGroceryItems()
-        //   firestoreService = FirestoreService()
+        
         groceryItems = []
         selectedCategory = "All"
         basketItems = []
         cancellables = Set<AnyCancellable>()
         orderItems = []
-        //   order = ""
-        
         fetchGroceryItems()
-        //fetchBasketItems()
+        
     }
-  /*  func start() {
-           fetchGroceryItems()
-       }*/
+    
     func fetchGroceryItems() {
         firestoreService.fetchGroceryItems()
             .receive(on: DispatchQueue.main)
@@ -63,10 +57,12 @@ class GroceryListViewModel: ObservableObject {
         }
     }
     
-    /*func    updateBasketItems() {
-        basketItems = groceryItems.filter { $0.quantity > 0 }
-    }*/
-
+    func calculateTotalAmount() -> Double {
+        let totalAmount = basketItems.reduce(0.0) { $0 + ($1.price * Double($1.quantity)) }
+        return totalAmount
+    }
+    
+    
     func deleteItemsFromBasket(at offsets: IndexSet) {
         // Iterate through the indices in reverse order to avoid index out of range issues
         for index in offsets.sorted(by: >) {
@@ -76,41 +72,31 @@ class GroceryListViewModel: ObservableObject {
         }
     }
     func createOrder() {
-            let orderItems = basketItems.map { OrderItem(name: $0.name, price: $0.price, quantity: $0.quantity) }
-            let totalAmount = basketItems.reduce(0.0) { $0 + ($1.price * Double($1.quantity)) }
-            let order = Order(orderItems: orderItems, totalAmount: totalAmount)
-            
-            firestoreService.saveOrder(order: order)
-            basketItems.removeAll() // Clear basket after checkout
+        let orderItems = basketItems.map { OrderItem(name: $0.name, price: $0.price, quantity: $0.quantity) }
+        let totalAmount = basketItems.reduce(0.0) { $0 + ($1.price * Double($1.quantity)) }
+        let order = Order(orderItems: orderItems, totalAmount: totalAmount)
+        
+        firestoreService.saveOrder(order: order)
+        basketItems.removeAll() // Clear basket after checkout
+    }
+    func incrementItemQuantity(at index: Int) {
+        if index >= 0 && index < basketItems.count {
+            var item = basketItems[index]
+            item.quantity += 1
+            basketItems[index] = item
+            firestoreService.updateItemQuantityInFirestore(item: item, newQuantity: item.quantity)
         }
+    }
+    
+    func decrementItemQuantity(at index: Int) {
+        if index >= 0 && index < basketItems.count {
+            var item = basketItems[index]
+            if item.quantity > 0 {
+                item.quantity -= 1
+                basketItems[index] = item
+                firestoreService.updateItemQuantityInFirestore(item: item, newQuantity: item.quantity)
+            }
+        }
+    }
 }
 
-/*class GroceryListViewModel: ObservableObject {
-    private var firestoreService = FirestoreService()
-    
-    @Published var groceryItems: [GroceryItem] = []
-    @Published var basketItems: [GroceryItem] = []
-    private var cancellables = Set<AnyCancellable>()
-    
-    init() {
-        fetchGroceryItems()
-    }
-    
-    func fetchGroceryItems() {
-        firestoreService.fetchGroceryItems()
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in }, receiveValue: { items in
-                self.groceryItems = items
-            })
-            .store(in: &cancellables)
-    }
-    
-    func shopItem(_ item: GroceryItem) {
-        firestoreService.shopItem(item)
-    }
-    
-    func updateBasketItems() {
-        basketItems = groceryItems.filter { $0.quantity > 0 }
-    }
-}
-*/

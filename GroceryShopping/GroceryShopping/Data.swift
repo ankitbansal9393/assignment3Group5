@@ -22,7 +22,7 @@ struct GroceryItem: Codable, Identifiable {
     var price: Double
     var category: String
     var quantity: Int
-    var description: String?  // Optional property
+    var description: String?
 
     enum CodingKeys: String, CodingKey {
         case id
