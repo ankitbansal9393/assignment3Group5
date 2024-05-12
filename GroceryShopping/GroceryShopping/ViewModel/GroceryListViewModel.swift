@@ -71,10 +71,11 @@ class GroceryListViewModel: ObservableObject {
             firestoreService.updateItemQuantityInFirestore(item: item, newQuantity: 0) // Update quantity to 0 in Firestore
         }
     }
-    func createOrder() {
+    func createOrder(orderId: String) {
         let orderItems = basketItems.map { OrderItem(name: $0.name, price: $0.price, quantity: $0.quantity) }
         let totalAmount = basketItems.reduce(0.0) { $0 + ($1.price * Double($1.quantity)) }
-        let order = Order(orderItems: orderItems, totalAmount: totalAmount)
+        
+        let order = Order(orderItems: orderItems, totalAmount: totalAmount, orderId: orderId)
         
         firestoreService.saveOrder(order: order)
         basketItems.removeAll() // Clear basket after checkout

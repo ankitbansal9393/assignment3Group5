@@ -19,24 +19,25 @@ class FirestoreService: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
        
     
-    func saveUserDetails(name: String, address: String, contactInfo: String) {
-            let userRef = db.collection("users").document() // Create a new document in the "users" collection
-            
-            let userData: [String: Any] = [
-                "name": name,
-                "address": address,
-                "contactInfo": contactInfo
-                // Add more user details as needed
-            ]
-            
-            userRef.setData(userData) { error in
-                if let error = error {
-                    print("Error saving user details: \(error.localizedDescription)")
-                } else {
-                    print("User details saved successfully!")
-                }
+    func saveUserDetails(name: String, address: String, contactInfo: String, orderId: String) {
+        let userRef = db.collection("users").document() // Create a new document in the "users" collection
+        
+        let userData: [String: Any] = [
+            "name": name,
+            "address": address,
+            "contactInfo": contactInfo,
+            "orderId": orderId
+            // Add more user details as needed
+        ]
+        
+        userRef.setData(userData) { error in
+            if let error = error {
+                print("Error saving user details: \(error.localizedDescription)")
+            } else {
+                print("User details saved successfully!")
             }
         }
+    }
     
     func updateItemQuantityInFirestore(item: GroceryItem, newQuantity: Int) {
         // let db = Firestore.firestore()
