@@ -29,9 +29,9 @@ struct WelcomeView: View {
                         Text("Welcome to Jade's shop")
                             .font(.custom("Poppins-Medium", size: 25))
                             .foregroundColor(Color.mainTextColor)
-                            
                         
-                        Text("Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.")
+                        
+                        Text("One stop to purchase all the Grocery needs. Beats all the prices!!")
                             .font(.custom("Poppins-Regular", size: 18))
                             .foregroundColor(Color.mainTextColor)
                             .frame(maxWidth: .infinity, alignment: .center)
@@ -46,28 +46,28 @@ struct WelcomeView: View {
                     Button(action: {
                         self.goToLogin = true
                     } ) {
-                      Text("Get Started")
+                        Text("Get Started")
                             .font(.custom("Poppins-Bold", size: 18))
                             .foregroundColor(.white)
                             .padding(10)
-                            
+                        
                     }
-                
+                    
                     .frame(width: 300)
                     .padding(5)
                     .background(Color.mainMintColor)
                     .cornerRadius(40)
                     
                     
-                        
+                    
                 }
                 
-             
+                
             }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
-       
+        
     }
 }
 

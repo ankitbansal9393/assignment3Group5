@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  SignUpView.swift
 //  GroceryShopping
 //
 //  Created by Daun Jeong on 4/5/2024.
@@ -7,21 +7,23 @@
 
 import SwiftUI
 
-struct LoginView: View {
+struct SignUpView: View {
     
+    @State private var name: String = ""
     @State private var email: String = ""
+    @State private var phone: String = ""
     @State private var password: String = ""
-
-    @State private var goToSignUp: Bool = false
-    @State private var goToHome: Bool = false
-
+    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ZStack {
                 
                 Color(hex: "#FFFFFF")
                     .edgesIgnoringSafeArea(.all)
+                
                 
                 VStack {
                     Image("logo")
@@ -29,44 +31,52 @@ struct LoginView: View {
                         .frame(width: 80, height: 80)
                         .padding(.bottom, 60)
                     
-                    TextField("", text: $email)
-                        .placeholder(when: email.isEmpty) {
-                                Text("Email").foregroundColor(.gray)
+                    TextField("", text: $name)
+                        .placeholder(when: name.isEmpty) {
+                            Text("Name").foregroundColor(.gray)
                         }
                         .font(.custom("Poppins-Regular", size: 18))
-                        .foregroundColor(Color.mainTextColor)
+                        .foregroundColor(Color("TextDarkColor"))
+                        .keyboardType(.default)
+                        .textContentType(.name)
+                        .underlineTextField()
+                    
+                    TextField("", text: $email)
+                        .placeholder(when: email.isEmpty) {
+                            Text("Email Address").foregroundColor(.gray)
+                        }
+                        .font(.custom("Poppins-Regular", size: 18))
+                        .foregroundColor(Color("TextDarkColor"))
                         .keyboardType(.emailAddress)
                         .textContentType(.emailAddress)
                         .underlineTextField()
                     
-                    
-                    SecureField("", text: $password)
-                        .placeholder(when: email.isEmpty) {
-                                Text("Password").foregroundColor(.gray)
+                    TextField("", text: $phone)
+                        .placeholder(when: phone.isEmpty) {
+                            Text("Phone Number").foregroundColor(.gray)
                         }
                         .font(.custom("Poppins-Regular", size: 18))
-                        .foregroundColor(Color.mainTextColor)
+                        .foregroundColor(Color("TextDarkColor"))
+                        .keyboardType(.phonePad)
+                        .textContentType(.telephoneNumber)
+                        .underlineTextField()
+                    
+                    
+                    SecureField("", text: $password)
+                        .placeholder(when: password.isEmpty) {
+                            Text("Password").foregroundColor(.gray)
+                        }
+                        .font(.custom("Poppins-Regular", size: 18))
+                        .foregroundColor(Color("TextDarkColor"))
                         .textContentType(.password)
                         .underlineTextField()
                     
-                    Text("Forgot password")
-                        .font(.custom("Poppins-Regular", size: 15))
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.trailing, 10)
-                        .padding(.bottom, 30)
-                        .padding(.top, -10)
-                    
-                    
-                    
-                    Button {
-                        goToHome = true
-                    } label: {
-                      Text("Login")
+                    Button {} label: {
+                        Text("Sign up")
                             .font(.custom("Poppins-Bold", size: 18))
                             .foregroundColor(.white)
                             .padding(10)
-                            
+                        
                     }
                     .frame(maxWidth: .infinity, minHeight: 50)
                     .padding(5)
@@ -97,37 +107,37 @@ struct LoginView: View {
                             .padding(.horizontal, 5)
                     }
                     
-                    NavigationLink(destination: SignUpView(), isActive: $goToSignUp) { EmptyView() }
-                    
-                    NavigationLink(destination: HomeView(), isActive: $goToHome) { EmptyView() }
-                    
-                    Text("Don't have an account? \(Text("Sign up.").foregroundColor(.mainTextColor).font(.custom("Poppins-Bold", size: 15)))")
+                    Text("Already have an account? \(Text("Sign in.").foregroundColor(.mainTextColor).font(.custom("Poppins-Bold", size: 15)))")
                         .foregroundColor(.gray)
                         .font(.custom("Poppins-Regular", size: 15))
                         .foregroundColor(.gray)
                         .padding(.top, 30)
                         .padding(.bottom, 30)
-                        .onTapGesture {
-                            self.goToSignUp = true
-                        }
-                    
                     
                 }
                 .padding()
+                
             }
         }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.goToSignUp = false
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                
+                Image(systemName: "arrow.backward")
+                    .tint(.mainTextColor)
+                    .font(.system(size: 25))
+                    .onTapGesture {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                
+                
+                
+                
             }
         }
     }
 }
-
-
 #Preview {
-    LoginView()
+    SignUpView()
 }
 

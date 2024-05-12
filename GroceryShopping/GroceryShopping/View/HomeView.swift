@@ -29,12 +29,12 @@ struct HomeView: View {
                 BottomNavBar()
             }
             .padding(.all, 10)
-
+            
         }
         .navigationBarBackButtonHidden()
         .navigationBarHidden(true)
         
-       
+        
         
     }
 }
@@ -49,7 +49,7 @@ struct AppBarView: View {
     
     var body: some View {
         HStack {
-
+            
             VStack (alignment: .leading) {
                 Text("Hello Jade!")
                     .font(.custom("Poppins-Bold", size: 18))
@@ -72,7 +72,7 @@ struct AppBarView: View {
 
 struct SearchView: View {
     @State private var search = ""
-
+    
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
@@ -90,8 +90,8 @@ struct SearchView: View {
                 .padding(10)
         }
         .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.mainMintColor, lineWidth: 2))
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.mainMintColor, lineWidth: 2))
         .padding(10)
         
     }
@@ -335,9 +335,9 @@ struct BottomNavBar: View {
         HStack {
             
             NavigationLink(
-                "", destination: CartView(),
+                "", destination: BasketView(viewModel: GroceryListViewModel()),
                 isActive: $goToCart)
-           
+            
             
             BottomNavBarItem(image: Image(systemName: "house")) {}
             BottomNavBarItem(image: Image(systemName: "cart")) {

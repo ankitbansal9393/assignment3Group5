@@ -1,5 +1,5 @@
 //
-//  SignUpView.swift
+//  LoginView.swift
 //  GroceryShopping
 //
 //  Created by Daun Jeong on 4/5/2024.
@@ -7,23 +7,21 @@
 
 import SwiftUI
 
-struct SignUpView: View {
+struct LoginView: View {
     
-    @State private var name: String = ""
     @State private var email: String = ""
-    @State private var phone: String = ""
     @State private var password: String = ""
     
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    @State private var goToSignUp: Bool = false
+    @State private var goToHome: Bool = false
+    
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 
                 Color(hex: "#FFFFFF")
                     .edgesIgnoringSafeArea(.all)
-                
                 
                 VStack {
                     Image("logo")
@@ -31,52 +29,44 @@ struct SignUpView: View {
                         .frame(width: 80, height: 80)
                         .padding(.bottom, 60)
                     
-                    TextField("", text: $name)
-                        .placeholder(when: name.isEmpty) {
-                                Text("Name").foregroundColor(.gray)
-                        }
-                        .font(.custom("Poppins-Regular", size: 18))
-                        .foregroundColor(Color("TextDarkColor"))
-                        .keyboardType(.default)
-                        .textContentType(.name)
-                        .underlineTextField()
-                    
                     TextField("", text: $email)
                         .placeholder(when: email.isEmpty) {
-                                Text("Email Address").foregroundColor(.gray)
+                            Text("Email").foregroundColor(.gray)
                         }
                         .font(.custom("Poppins-Regular", size: 18))
-                        .foregroundColor(Color("TextDarkColor"))
+                        .foregroundColor(Color.mainTextColor)
                         .keyboardType(.emailAddress)
                         .textContentType(.emailAddress)
                         .underlineTextField()
                     
-                    TextField("", text: $phone)
-                        .placeholder(when: phone.isEmpty) {
-                                Text("Phone Number").foregroundColor(.gray)
-                        }
-                        .font(.custom("Poppins-Regular", size: 18))
-                        .foregroundColor(Color("TextDarkColor"))
-                        .keyboardType(.phonePad)
-                        .textContentType(.telephoneNumber)
-                        .underlineTextField()
-                    
                     
                     SecureField("", text: $password)
-                        .placeholder(when: password.isEmpty) {
-                                Text("Password").foregroundColor(.gray)
+                        .placeholder(when: email.isEmpty) {
+                            Text("Password").foregroundColor(.gray)
                         }
                         .font(.custom("Poppins-Regular", size: 18))
-                        .foregroundColor(Color("TextDarkColor"))
+                        .foregroundColor(Color.mainTextColor)
                         .textContentType(.password)
                         .underlineTextField()
                     
-                    Button {} label: {
-                      Text("Sign up")
+                    Text("Forgot password")
+                        .font(.custom("Poppins-Regular", size: 15))
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.trailing, 10)
+                        .padding(.bottom, 30)
+                        .padding(.top, -10)
+                    
+                    
+                    
+                    Button {
+                        goToHome = true
+                    } label: {
+                        Text("Login")
                             .font(.custom("Poppins-Bold", size: 18))
                             .foregroundColor(.white)
                             .padding(10)
-                            
+                        
                     }
                     .frame(maxWidth: .infinity, minHeight: 50)
                     .padding(5)
@@ -107,37 +97,37 @@ struct SignUpView: View {
                             .padding(.horizontal, 5)
                     }
                     
-                    Text("Already have an account? \(Text("Sign in.").foregroundColor(.mainTextColor).font(.custom("Poppins-Bold", size: 15)))")
+                    NavigationLink(destination: SignUpView(), isActive: $goToSignUp) { EmptyView() }
+                    
+                    NavigationLink(destination: HomeView(), isActive: $goToHome) { EmptyView() }
+                    
+                    Text("Don't have an account? \(Text("Sign up.").foregroundColor(.mainTextColor).font(.custom("Poppins-Bold", size: 15)))")
                         .foregroundColor(.gray)
                         .font(.custom("Poppins-Regular", size: 15))
                         .foregroundColor(.gray)
                         .padding(.top, 30)
                         .padding(.bottom, 30)
+                        .onTapGesture {
+                            self.goToSignUp = true
+                        }
+                    
                     
                 }
                 .padding()
-
             }
         }
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-    
-                Image(systemName: "arrow.backward")
-                    .tint(.mainTextColor)
-                    .font(.system(size: 25))
-                    .onTapGesture {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-
-                
-                
-              
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.goToSignUp = false
             }
         }
     }
 }
+
+
 #Preview {
-    SignUpView()
+    LoginView()
 }
 

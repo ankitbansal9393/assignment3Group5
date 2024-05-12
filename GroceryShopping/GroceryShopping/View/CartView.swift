@@ -10,7 +10,7 @@ import SwiftUI
 struct CartView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel = GroceryListViewModel()
-
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
@@ -65,55 +65,55 @@ struct CartView_Previews: PreviewProvider {
 
 struct CartItemView: View {
     var item: GroceryItem
-
+    
     var body: some View {
-            HStack(spacing: 20) {
-               /* Image(item.imageName) // Placeholder for the actual image file name
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80, height: 80)
-                    .cornerRadius(10)
-                    .padding(.leading, 10)*/
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(item.name)
-                        .font(.custom("Poppins-Bold", size: 16))
-                        .foregroundColor(Color.black.opacity(0.7))
-                    Text("$\(item.price, specifier: "%.2f") | \(item.quantity)KG")
-                        .font(.custom("Poppins-Regular", size: 14))
-                        .foregroundColor(Color.gray)
-                }
-
-                Spacer()
-
-                // Adjust the increment and decrement buttons if necessary
-                HStack(spacing: 10) {
-                    Button(action: {
-                        // Decrement action
-                    }) {
-                        Image(systemName: "minus.circle.fill")
-                            .foregroundColor(Color.red)
-                    }
-
-                    Text("1") // This would be dynamically bound to item quantity in a real app
-                        .font(.custom("Poppins-Regular", size: 16))
-                    
-                    Button(action: {
-                        // Increment action
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(Color.green)
-                    }
-                }
-                .padding(.trailing, 10)
+        HStack(spacing: 20) {
+            /* Image(item.imageName) // Placeholder for the actual image file name
+             .resizable()
+             .scaledToFit()
+             .frame(width: 80, height: 80)
+             .cornerRadius(10)
+             .padding(.leading, 10)*/
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(item.name)
+                    .font(.custom("Poppins-Bold", size: 16))
+                    .foregroundColor(Color.black.opacity(0.7))
+                Text("$\(item.price, specifier: "%.2f") | \(item.quantity)KG")
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(Color.gray)
             }
-            .frame(height: 100)
-            .background(Color.white)
-            .cornerRadius(12)
-            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-            .padding(.horizontal, 10)
+            
+            Spacer()
+            
+            // Adjust the increment and decrement buttons if necessary
+            HStack(spacing: 10) {
+                Button(action: {
+                    // Decrement action
+                }) {
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(Color.red)
+                }
+                
+                Text("1") // This would be dynamically bound to item quantity in a real app
+                    .font(.custom("Poppins-Regular", size: 16))
+                
+                Button(action: {
+                    // Increment action
+                }) {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(Color.green)
+                }
+            }
+            .padding(.trailing, 10)
         }
+        .frame(height: 100)
+        .background(Color.white)
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .padding(.horizontal, 10)
     }
+}
 
 struct BottomSumView: View {
     var body: some View {

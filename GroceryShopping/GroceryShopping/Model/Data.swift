@@ -7,14 +7,7 @@
 
 import Foundation
 import FirebaseFirestoreSwift
-/*
-struct GroceryItem: Codable, Identifiable {
-   // var id: String
-    var name: String
-    var price: Double
-    var category: String
-    var quantity: Int // New field for quantity in the basket
-}*/
+
 
 struct GroceryItem: Codable, Identifiable {
     var id: String
@@ -23,7 +16,7 @@ struct GroceryItem: Codable, Identifiable {
     var category: String
     var quantity: Int
     var description: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -32,7 +25,7 @@ struct GroceryItem: Codable, Identifiable {
         case quantity
         case description
     }
-
+    
     init(id: String, name: String, price: Double, category: String, quantity: Int, description: String? = nil) {
         self.id = id
         self.name = name
@@ -52,4 +45,5 @@ struct OrderItem: Codable {
 struct Order: Codable {
     let orderItems: [OrderItem]
     let totalAmount: Double
+    let orderId: String
 }
