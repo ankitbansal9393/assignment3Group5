@@ -350,7 +350,7 @@ struct BottomNavBar: View {
             BottomNavBarItem(image: Image(systemName: "cart")) {
                 goToCart = true
             }
-            BottomNavBarItem(image: Image(systemName: "bell.badge")) {
+            BottomNavBarItem(image: Image(systemName: "map")) {
                 goToMap = true
             }
             BottomNavBarItem(image: Image(systemName: "person")) {
