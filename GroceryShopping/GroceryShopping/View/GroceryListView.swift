@@ -26,7 +26,7 @@ struct GroceryListView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(item.name)
-                        Text("$\(item.price)")
+                        Text("$\(item.price, specifier: "%.2f")")
                         Text(item.category)
                     }
                     Spacer()

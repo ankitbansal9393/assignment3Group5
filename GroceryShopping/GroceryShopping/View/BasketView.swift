@@ -33,7 +33,7 @@ struct BasketView: View {
                     HStack {
                         VStack(alignment: .leading) {
                             Text(item.name)
-                            Text("$\(item.price)")
+                            Text("$\(item.price, specifier: "%.2f")")
                             Text("Quantity: \(item.quantity)")
                         }
                         Spacer()
