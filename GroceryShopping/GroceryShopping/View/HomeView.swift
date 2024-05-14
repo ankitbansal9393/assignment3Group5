@@ -330,21 +330,32 @@ struct BottomNavBarItem: View {
 
 struct BottomNavBar: View {
     @State var goToCart: Bool = false
+    @State var goToMap: Bool = false
     
     var body: some View {
         HStack {
             
+           
             NavigationLink(
                 "", destination: BasketView(viewModel: GroceryListViewModel()),
                 isActive: $goToCart)
+            NavigationLink(
+                "", destination: MapView(viewModel: ContentViewModel()),
+                isActive: $goToMap)
+
+            
             
             
             BottomNavBarItem(image: Image(systemName: "house")) {}
             BottomNavBarItem(image: Image(systemName: "cart")) {
                 goToCart = true
             }
-            BottomNavBarItem(image: Image(systemName: "bell.badge")) {}
-            BottomNavBarItem(image: Image(systemName: "person")) {}
+            BottomNavBarItem(image: Image(systemName: "bell.badge")) {
+                goToMap = true
+            }
+            BottomNavBarItem(image: Image(systemName: "person")) {
+                
+            }
         }
         .padding()
         .background(Color.white)
