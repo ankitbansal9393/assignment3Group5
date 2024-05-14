@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct SignUpView: View {
     
@@ -13,6 +14,11 @@ struct SignUpView: View {
     @State private var email: String = ""
     @State private var phone: String = ""
     @State private var password: String = ""
+    
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    
+    @State private var isActive = false
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -71,7 +77,9 @@ struct SignUpView: View {
                         .textContentType(.password)
                         .underlineTextField()
                     
-                    Button {} label: {
+                    Button {
+                        createUser()
+                    } label: {
                         Text("Sign up")
                             .font(.custom("Poppins-Bold", size: 18))
                             .foregroundColor(.white)
@@ -116,8 +124,19 @@ struct SignUpView: View {
                     
                 }
                 .padding()
+                NavigationLink(destination: HomeView().navigationBarBackButtonHidden(true),
+                               isActive: $isActive){
+                    EmptyView()
+                }
                 
             }
+            .alert(isPresented: $showAlert) {
+                        Alert(
+                            title: Text("Alert"),
+                            message: Text(alertMessage),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -136,6 +155,21 @@ struct SignUpView: View {
             }
         }
     }
+    
+    private func createUser(){
+        Auth.auth().createUser(withEmail: email, password: password) {result, err in
+            if let err = err {
+                print("Signup error", err)
+                self.showAlert = true
+                self.alertMessage = "Failed: \(err.localizedDescription)"
+                return
+            }
+            
+            print("Succesfully created user: \(result?.user.uid ?? "") ")
+            self.isActive = true
+        }
+    }
+    
 }
 #Preview {
     SignUpView()

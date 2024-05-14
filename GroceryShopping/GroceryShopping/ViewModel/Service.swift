@@ -160,17 +160,5 @@ class FirestoreService: ObservableObject {
             // Handle error
         }
     }
-  /* func updateItemQuantityInFirestore(item: GroceryItem, newQuantity: Int) {
-           let itemRef = db.collection("groceryItems").document(item.id)
-           
-           itemRef.updateData([
-               "quantity": newQuantity
-           ]) { error in
-               if let error = error {
-                   print("Error updating item quantity: \(error.localizedDescription)")
-               } else {
-                   print("Item quantity updated successfully in Firestore")
-               }
-           }
-       }*/
+   
 }

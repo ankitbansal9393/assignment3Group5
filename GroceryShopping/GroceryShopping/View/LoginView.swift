@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct LoginView: View {
     
@@ -14,6 +15,15 @@ struct LoginView: View {
     
     @State private var goToSignUp: Bool = false
     @State private var goToHome: Bool = false
+    
+    
+    
+    //For giving Alert
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    
+    //Binding for HomeView COntroll
+    @Binding var isUserCurrentlyLoggedOut: Bool
     
     
     var body: some View {
@@ -60,7 +70,7 @@ struct LoginView: View {
                     
                     
                     Button {
-                        goToHome = true
+                        loginUser()
                     } label: {
                         Text("Login")
                             .font(.custom("Poppins-Bold", size: 18))
@@ -115,6 +125,13 @@ struct LoginView: View {
                 }
                 .padding()
             }
+            .alert(isPresented: $showAlert) {
+                        Alert(
+                            title: Text("Alert"),
+                            message: Text(alertMessage),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
@@ -124,10 +141,34 @@ struct LoginView: View {
             }
         }
     }
+    
+    private func loginUser(){
+        Auth.auth().signIn(withEmail: email, password: password) {result, err in
+            if let err = err {
+                print("login error", err)
+                self.showAlert = true
+                self.alertMessage = "Failed: \(err.localizedDescription)"
+                return
+            }
+            
+            print("Succesfully Logged in: \(result?.user.uid ?? "") ")
+            
+            self.isUserCurrentlyLoggedOut = true
+        }
+    }
+
+    
+}
+
+struct LoginView_Previews: PreviewProvider {
+    @State static var isUserCurrentlyLoggedOut = false
+    static var previews: some View{
+        LoginView(isUserCurrentlyLoggedOut: $isUserCurrentlyLoggedOut)
+    }
 }
 
 
-#Preview {
-    LoginView()
-}
+//#Preview {
+//    LoginView()
+//}
 

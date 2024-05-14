@@ -41,7 +41,7 @@ struct WelcomeView: View {
                     .padding()
                     
                     
-                    NavigationLink(destination: LoginView(), isActive: $goToLogin) { EmptyView() }
+                    NavigationLink(destination: MainView().navigationBarBackButtonHidden(true), isActive: $goToLogin) { EmptyView() }
                     
                     Button(action: {
                         self.goToLogin = true
