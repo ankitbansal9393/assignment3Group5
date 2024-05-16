@@ -340,7 +340,7 @@ struct BottomNavBar: View {
                 "", destination: BasketView(viewModel: GroceryListViewModel()),
                 isActive: $goToCart)
             NavigationLink(
-                "", destination: MapView(viewModel: ContentViewModel()),
+                "", destination: MapView(viewModel: GroceryListViewModel()),
                 isActive: $goToMap)
 
             
